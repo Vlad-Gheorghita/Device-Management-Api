@@ -1,24 +1,64 @@
 ﻿using DeviceManagement.Application.ServicesInterfaces;
 using DeviceManagement.Domain.Entities;
+using DeviceManagement.Domain.Models.User;
 using DeviceManagement.Domain.Repositories;
+using BCrypt.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace DeviceManagement.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IDeviceRepository deviceRepository;
+        private readonly IMapper mapper;
+
+        public UserService(IUserRepository userRepository, IDeviceRepository deviceRepository, IMapper mapper)
         {
             this.userRepository = userRepository;
+            this.deviceRepository = deviceRepository;
+            this.mapper = mapper;
         }
-        public void Create(User user)
+
+        public async Task<bool> DeleteUser(int id)
         {
-            userRepository.Add(user);
+            var user = await userRepository.GetUserByIdAsync(id);
+            var devices = await deviceRepository.GetAllDevicesAsync();
+
+            return await userRepository.Delete(user);
+        }
+
+        public IEnumerable<UserResponse> GetAllUsers()
+        {
+            return mapper.Map<IEnumerable<UserResponse>>(userRepository.List());
+        }
+
+        public async Task<UserResponse> GetUserById(int id)
+        {
+            return mapper.Map<UserResponse>(await userRepository.GetById(id));
+        }
+
+        public async Task<UserResponse> GetUserByName(string name)
+        {
+            return mapper.Map<UserResponse>(await userRepository.GeUserByNameAsync(name));
+        }
+
+        public async Task<bool> UpdateUser(UserUpdateRequest useraUpdateRequest)
+        {
+            var user = await userRepository.GetById(useraUpdateRequest.Id);
+            if (user == null)
+                return false;
+
+            user.Name = useraUpdateRequest.Name;
+            user.Email = useraUpdateRequest.Email;
+
+            return await userRepository.Edit(user);
+            
         }
     }
 }

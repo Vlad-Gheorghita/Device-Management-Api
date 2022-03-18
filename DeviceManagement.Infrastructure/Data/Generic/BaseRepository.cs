@@ -21,7 +21,7 @@ namespace DeviceManagement.Infrastructure.Data.Generic
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
-        public virtual IEnumerable<T> List()
+        public IEnumerable<T> List()
         {
             return _dbContext.Set<T>().AsEnumerable();
         }
@@ -31,20 +31,21 @@ namespace DeviceManagement.Infrastructure.Data.Generic
                    .Where(predicate)
                    .AsEnumerable();
         }
-        public void Add(T entity)
+
+        public async Task<bool> Add(T entity)
         {
             _dbContext.Set<T>().Add(entity);
-            _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync() > 0;
         }
-        public void Edit(T entity)
+        public async Task<bool> Edit(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync() > 0;
         }
-        public void Delete(T entity)
+        public async Task<bool> Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
     }
