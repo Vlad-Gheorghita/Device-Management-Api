@@ -14,5 +14,7 @@ namespace DeviceManagement.Domain.Repositories
         public Task<IEnumerable<User>> GetAllAsync();
         public Task<User> GeUserByNameAsync(string name);
         public Task<User> GetUserByIdAsync(int id);
+        public Task<User> GetUserByEmailAsync(string email);
+        public IEnumerable<Role> GetUserRolesAsync(int id);
     }
 }

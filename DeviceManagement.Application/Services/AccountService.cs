@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DeviceManagement.Application.Authorization;
+using DeviceManagement.Application.Helpers;
 using DeviceManagement.Application.ServicesInterfaces;
 using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.User;
@@ -7,6 +7,7 @@ using DeviceManagement.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,35 +17,37 @@ namespace DeviceManagement.Application.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
-        //private readonly IJwtUtils jwtUtils;
+        private readonly ITokenService tokenService;
+        private readonly IRoleRepository roleRepository;
 
-        public AccountService(IUserRepository userRepository, IMapper mapper)//, IJwtUtils jwtUtils)
+        public AccountService(IUserRepository userRepository, IMapper mapper, ITokenService tokenService, IRoleRepository roleRepository)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
-            //this.jwtUtils = jwtUtils;
+            this.tokenService = tokenService;
+            this.roleRepository = roleRepository;
         }
 
-        public async Task<UserResponse> Login(UserLoginRequest userLoginRequest)
+        public UserResponse Login(UserLoginRequest userLoginRequest)
         {
-            var users = await userRepository.GetAllAsync();
-            if (!users.Any(u => u.Email == userLoginRequest.Email))
+            //var users = await userRepository.GetAllAsync();
+            //if (!users.Any(u => u.Email == userLoginRequest.Email))
+            //    return null;
+
+            var user = userRepository.List().FirstOrDefault(u => u.Email == userLoginRequest.Email);
+            if (user == null)
                 return null;
 
-            var user = users.SingleOrDefault(u => u.Email == userLoginRequest.Email);
 
             if (!BCrypt.Net.BCrypt.Verify(userLoginRequest.Password, user.Password))
                 return null;
 
             var userResponse = mapper.Map<UserResponse>(user);
 
-            //var jwtToken = jwtUtils.GenerateJwtToken(userResponse);
+            userResponse.Token = this.tokenService.CreateToken(user);
 
-            //userResponse.Token = jwtToken;
 
             return userResponse;
-
-
 
         }
 
@@ -56,11 +59,15 @@ namespace DeviceManagement.Application.Services
 
             var user = mapper.Map<User>(userRegisterRequest);
             user.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterRequest.Password);
+            user.Roles.Add(await roleRepository.GetById(2)); //Add as member
 
             if (!(await userRepository.Add(user)))
                 return null;
 
-            return mapper.Map<UserResponse>(user);
+            var userResponse = mapper.Map<UserResponse>(user);
+            userResponse.Token = this.tokenService.CreateToken(user);
+
+            return userResponse;
         }
     }
 }

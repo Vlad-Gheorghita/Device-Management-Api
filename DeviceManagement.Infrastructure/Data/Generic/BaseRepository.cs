@@ -34,7 +34,7 @@ namespace DeviceManagement.Infrastructure.Data.Generic
 
         public async Task<bool> Add(T entity)
         {
-            _dbContext.Set<T>().Add(entity);
+            await _dbContext.Set<T>().AddAsync(entity);
             return await _dbContext.SaveChangesAsync() > 0;
         }
         public async Task<bool> Edit(T entity)

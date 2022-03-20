@@ -1,5 +1,4 @@
 ﻿using DeviceManagement.Application.ServicesInterfaces;
-using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.User;
 using Microsoft.AspNetCore.Mvc;
 

@@ -17,5 +17,6 @@ namespace DeviceManagement.Domain.Models.Device
         public double OperatingSystemVersion { get; set; }
         public string Processor { get; set; }
         public long RAM { get; set; }
+        public int UserId { get; set; }
     }
 }

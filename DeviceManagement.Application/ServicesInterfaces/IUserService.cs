@@ -17,6 +17,7 @@ namespace DeviceManagement.Application.ServicesInterfaces
         public Task<bool> UpdateUser(UserUpdateRequest useraUpdateRequest);
         public Task<UserResponse> GetUserByName(string name);
         public Task<bool> DeleteUser(int id);
+        public IList<string> GetUserRoles(int id);
   
     }
 }

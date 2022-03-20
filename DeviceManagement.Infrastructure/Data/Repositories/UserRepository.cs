@@ -24,12 +24,26 @@ namespace DeviceManagement.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await dbContext.Users.Include(u => u.Roles).ToListAsync();
+            var users = await dbContext.Users.ToListAsync();
+            return users;
+
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
             return await dbContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public IEnumerable<Role> GetUserRolesAsync(int id)
+        {
+            var user = dbContext.Users.Include(u => u.Roles).SingleOrDefault(u => u.Id == id);
+
+            return user.Roles.ToList();
         }
 
         public async Task<User> GeUserByNameAsync(string name)

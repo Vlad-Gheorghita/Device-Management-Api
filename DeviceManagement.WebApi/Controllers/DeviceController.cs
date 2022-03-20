@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize(Policy = "RequireAdminRole")]
     public class DeviceController : ApiControllerBase
     {
         private readonly IDeviceService deviceService;
@@ -19,6 +19,7 @@ namespace DeviceManagement.WebApi.Controllers
             this.deviceService = deviceService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DeviceResponse>>> GetAllDevices()
         {
@@ -26,12 +27,15 @@ namespace DeviceManagement.WebApi.Controllers
 
             return Ok(deviceList);
         }
+
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<DeviceResponse>> GetDeviceById(int id)
         {
             return Ok(await deviceService.GetDeviceById(id));
         }
 
+        
         [HttpPost]
         public async Task<ActionResult> AddDevice(DeviceCreateRequest deviceCreateRequest)
         {
@@ -41,6 +45,7 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok("Device added successfully");
         }
 
+        
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDevice(int id)
         {

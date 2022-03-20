@@ -40,12 +40,25 @@ namespace DeviceManagement.Application.Services
 
         public async Task<UserResponse> GetUserById(int id)
         {
-            return mapper.Map<UserResponse>(await userRepository.GetById(id));
+            return mapper.Map<UserResponse>(await userRepository.GetUserByIdAsync(id));
         }
 
         public async Task<UserResponse> GetUserByName(string name)
         {
             return mapper.Map<UserResponse>(await userRepository.GeUserByNameAsync(name));
+        }
+
+        public IList<string> GetUserRoles(int id)
+        {
+            var roles = new List<string>();
+
+            foreach(var role in userRepository.GetUserRolesAsync(id))
+            {
+                roles.Add(role.Name);
+            }
+
+            return roles;
+            
         }
 
         public async Task<bool> UpdateUser(UserUpdateRequest useraUpdateRequest)

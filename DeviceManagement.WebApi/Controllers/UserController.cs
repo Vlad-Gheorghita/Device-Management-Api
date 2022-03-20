@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.WebApi.Controllers
 {
-    //[Authorize]
+    
     public class UserController : ApiControllerBase
     {
         private readonly IUserService userService;
+
 
         public UserController(IUserService userService)
         {
             this.userService = userService;
         }
 
-        //[Authorize("Admin")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet]
         public ActionResult<IEnumerable<UserResponse>> GetUsers()
         {
@@ -33,7 +34,7 @@ namespace DeviceManagement.WebApi.Controllers
         {
             var user = await userService.GetUserById(id);
             if (user == null)
-                return NotFound();
+                return NotFound("Not Found");
 
             return Ok(user);
         }
@@ -47,6 +48,7 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok(userUpdateRequest);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
