@@ -14,7 +14,7 @@ namespace DeviceManagement.Domain.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public ICollection<Role> Roles { get; set; } = new List<Role>();
-        public string Location { get; set; }
+        public Location Location { get; set; }
         public ICollection<Device> Devices { get; set; }
     }
 

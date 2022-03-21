@@ -11,10 +11,11 @@ namespace DeviceManagement.Domain.Repositories
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-        public Task<IEnumerable<User>> GetAllAsync();
+        public IEnumerable<User> GetAll();
         public Task<User> GeUserByNameAsync(string name);
         public Task<User> GetUserByIdAsync(int id);
-        public Task<User> GetUserByEmailAsync(string email);
+        public User GetUserByEmail(string email);
         public IEnumerable<Role> GetUserRolesAsync(int id);
+        public  Task<Location> GetUserLocation(int id);
     }
 }

@@ -1,16 +1,14 @@
 ﻿using DeviceManagement.Application.ServicesInterfaces;
-using DeviceManagement.Domain.Entities;
+using DeviceManagement.Domain.Models.Location;
 using DeviceManagement.Domain.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.WebApi.Controllers
 {
-    
     public class UserController : ApiControllerBase
     {
         private readonly IUserService userService;
-
 
         public UserController(IUserService userService)
         {
@@ -29,6 +27,7 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok(users);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserResponse>> GetUserById(int id)
         {
@@ -39,6 +38,7 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok(user);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPut]
         public async Task<ActionResult> UpdateUser(UserUpdateRequest userUpdateRequest)
         {
@@ -56,6 +56,13 @@ namespace DeviceManagement.WebApi.Controllers
                 return BadRequest();
 
             return Ok("User Deleted Successfully");
+        }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpGet("{id}/location")]
+        public async Task<ActionResult<LocationResponse>> GetUserLocation(int id)
+        {
+            return Ok(await userService.GetUserLocation(id));
         }
     }
 }

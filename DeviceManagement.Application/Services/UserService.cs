@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using DeviceManagement.Domain.Models.Location;
 
 namespace DeviceManagement.Application.Services
 {
@@ -35,7 +36,8 @@ namespace DeviceManagement.Application.Services
 
         public IEnumerable<UserResponse> GetAllUsers()
         {
-            return mapper.Map<IEnumerable<UserResponse>>(userRepository.List());
+
+            return mapper.Map<IEnumerable<UserResponse>>(userRepository.GetAll());
         }
 
         public async Task<UserResponse> GetUserById(int id)
@@ -72,6 +74,19 @@ namespace DeviceManagement.Application.Services
 
             return await userRepository.Edit(user);
             
+        }
+
+        public async Task<LocationResponse> GetUserLocation(int id)
+        {
+            var location = await userRepository.GetUserLocation(id);
+            if (location == null)
+                return null;
+
+            return new LocationResponse
+            {
+                Latitude = location.Latitude,
+                Longitude = location.Longitude,
+            };
         }
     }
 }

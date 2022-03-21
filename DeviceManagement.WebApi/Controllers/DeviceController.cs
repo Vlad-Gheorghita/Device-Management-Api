@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.WebApi.Controllers
 {
-    [Authorize(Policy = "RequireAdminRole")]
+    
     public class DeviceController : ApiControllerBase
     {
         private readonly IDeviceService deviceService;
@@ -19,23 +19,24 @@ namespace DeviceManagement.WebApi.Controllers
             this.deviceService = deviceService;
         }
 
-        [AllowAnonymous]
+        [Authorize(Policy = "RequireUserRole")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DeviceResponse>>> GetAllDevices()
+        public async Task<ActionResult<List<DeviceResponse>>> GetAllDevices()
         {
             var deviceList = await deviceService.GetAllDevices();
 
-            return Ok(deviceList);
+            return Ok(deviceList.ToList()); //nu stiu daca e de aici 
         }
 
-        [AllowAnonymous]
+        [Authorize(Policy = "RequireUserRole")]
         [HttpGet("{id}")]
         public async Task<ActionResult<DeviceResponse>> GetDeviceById(int id)
         {
             return Ok(await deviceService.GetDeviceById(id));
         }
 
-        
+
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         public async Task<ActionResult> AddDevice(DeviceCreateRequest deviceCreateRequest)
         {
@@ -45,7 +46,7 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok("Device added successfully");
         }
 
-        
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDevice(int id)
         {
@@ -55,6 +56,7 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok("Device deleted");
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPut]
         public async Task<ActionResult> EditDevice(DeviceUpdateRequest deviceUpdateRequest)
         {
@@ -62,6 +64,13 @@ namespace DeviceManagement.WebApi.Controllers
                 return NotFound();
 
             return Ok(deviceUpdateRequest);
+        }
+
+        [Authorize(Policy = "RequireUserRole")]
+        [HttpPut("{userId}")]
+        public async Task<ActionResult> UpdateDeviceUser(int userId)
+        {
+            return Ok();
         }
 
 

@@ -1,4 +1,6 @@
 ﻿using DeviceManagement.Domain.Entities;
+using DeviceManagement.Domain.Models.Location;
+using DeviceManagement.Domain.Models.Role;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,9 @@ namespace DeviceManagement.Domain.Models.User
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Location { get; set; }
+        public LocationResponse Location { get; set; }
         public string Token { get; set; }
+        public ICollection<RoleResponse> Roles { get; set; }
         
     }
 }

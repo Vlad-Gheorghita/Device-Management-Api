@@ -15,11 +15,13 @@ namespace DeviceManagement.Application.Services
     {
         private readonly IDeviceRepository deviceRepository;
         private readonly IMapper mapper;
+        private readonly IUserRepository userRepository;
 
-        public DeviceService(IDeviceRepository deviceRepository, IMapper mapper)
+        public DeviceService(IDeviceRepository deviceRepository, IMapper mapper, IUserRepository userRepository)
         {
             this.deviceRepository = deviceRepository;
             this.mapper = mapper;
+            this.userRepository = userRepository;
         }
 
         public async Task<bool> AddDevice(DeviceCreateRequest deviceCreateRequest)
@@ -48,6 +50,7 @@ namespace DeviceManagement.Application.Services
         public async Task<bool> UpdateDevice(DeviceUpdateRequest deviceUpdateRequest)
         {
             var device = await deviceRepository.GetById(deviceUpdateRequest.Id);
+            var user = await userRepository.GetUserByIdAsync(deviceUpdateRequest.UserId);
             if (device == null)
                 return false;
 
@@ -57,6 +60,7 @@ namespace DeviceManagement.Application.Services
             device.OperatingSystem = deviceUpdateRequest.OperatingSystem;
             device.OperatingSystemVersion = deviceUpdateRequest.OperatingSystemVersion;
             device.Processor = deviceUpdateRequest.Processor;
+            device.User = user;
 
             return await deviceRepository.Edit(device);
 

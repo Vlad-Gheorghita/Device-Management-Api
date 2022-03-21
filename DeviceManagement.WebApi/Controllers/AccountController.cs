@@ -1,9 +1,11 @@
 ﻿using DeviceManagement.Application.ServicesInterfaces;
 using DeviceManagement.Domain.Models.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.WebApi.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : ApiControllerBase
     {
         private readonly IAccountService accountService;

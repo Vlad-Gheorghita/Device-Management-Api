@@ -34,7 +34,8 @@ namespace DeviceManagement.Application.Services
             //if (!users.Any(u => u.Email == userLoginRequest.Email))
             //    return null;
 
-            var user = userRepository.List().FirstOrDefault(u => u.Email == userLoginRequest.Email);
+            //var user = userRepository.List().FirstOrDefault(u => u.Email == userLoginRequest.Email);
+            var user = userRepository.GetUserByEmail(userLoginRequest.Email);
             if (user == null)
                 return null;
 
@@ -53,7 +54,7 @@ namespace DeviceManagement.Application.Services
 
         public async Task<UserResponse> Register(UserRegisterRequest userRegisterRequest)
         {
-            var users = await userRepository.GetAllAsync();
+            var users = userRepository.GetAll();
             if (users.Any(u => u.Email == userRegisterRequest.Email || u.Name == userRegisterRequest.Name))
                 return null;
 

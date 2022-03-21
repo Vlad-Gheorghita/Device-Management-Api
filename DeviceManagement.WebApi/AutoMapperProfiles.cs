@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.Device;
+using DeviceManagement.Domain.Models.Role;
 using DeviceManagement.Domain.Models.User;
 
 namespace DeviceManagement.WebApi
@@ -15,6 +16,7 @@ namespace DeviceManagement.WebApi
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
             CreateMap<DeviceCreateRequest, Device>();
             CreateMap<UserUpdateRequest, User>();
+            CreateMap<Role, RoleResponse>();
         }
     }
 }
