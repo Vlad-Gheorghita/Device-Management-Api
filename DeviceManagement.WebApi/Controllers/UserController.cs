@@ -58,11 +58,11 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok("User Deleted Successfully");
         }
 
-        [Authorize(Policy = "RequireAdminRole")]
-        [HttpGet("{id}/location")]
-        public async Task<ActionResult<LocationResponse>> GetUserLocation(int id)
-        {
-            return Ok(await userService.GetUserLocation(id));
-        }
+        //[Authorize(Policy = "RequireAdminRole")]
+        //[HttpGet("{id}/location")]
+        //public async Task<ActionResult<LocationResponse>> GetUserLocation(int id)
+        //{
+        //    return Ok(await userService.GetUserLocation(id));
+        //}
     }
 }

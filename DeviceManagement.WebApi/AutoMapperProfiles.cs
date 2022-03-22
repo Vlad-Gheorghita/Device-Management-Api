@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.Device;
+using DeviceManagement.Domain.Models.Location;
 using DeviceManagement.Domain.Models.Role;
 using DeviceManagement.Domain.Models.User;
 

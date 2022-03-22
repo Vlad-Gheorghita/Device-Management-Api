@@ -19,7 +19,7 @@ namespace DeviceManagement.Application.ServicesInterfaces
 
         public IList<string> GetUserRoles(int id);
 
-        public Task<LocationResponse> GetUserLocation(int id);
+        //public Task<LocationResponse> GetUserLocation(int id);
 
     }
 }

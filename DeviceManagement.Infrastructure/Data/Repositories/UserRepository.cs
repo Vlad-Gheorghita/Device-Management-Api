@@ -30,14 +30,11 @@ namespace DeviceManagement.Infrastructure.Data.Repositories
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            return await dbContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+            var user =  await dbContext.Users.Include(u => u.Roles)
+                       .FirstOrDefaultAsync(u => u.Id == id);
+            return user;
         }
 
-        public async Task<Location> GetUserLocation(int id)
-        {
-            var user =  await dbContext.Users.Include(u => u.Location).FirstOrDefaultAsync(u => u.Id==id);
-            return user.Location;
-        }
 
         public IEnumerable<Role> GetUserRolesAsync(int id)
         {

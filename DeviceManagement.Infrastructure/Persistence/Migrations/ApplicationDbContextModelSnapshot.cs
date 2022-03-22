@@ -61,25 +61,6 @@ namespace DeviceManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("DeviceManagement.Domain.Entities.Location", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Longitude")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Location");
-                });
-
             modelBuilder.Entity("DeviceManagement.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -107,8 +88,11 @@ namespace DeviceManagement.Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -117,8 +101,6 @@ namespace DeviceManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
 
                     b.ToTable("Users");
                 });
@@ -145,15 +127,6 @@ namespace DeviceManagement.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DeviceManagement.Domain.Entities.User", b =>
-                {
-                    b.HasOne("DeviceManagement.Domain.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("RoleUser", b =>

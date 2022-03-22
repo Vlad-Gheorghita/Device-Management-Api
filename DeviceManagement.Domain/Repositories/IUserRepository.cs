@@ -16,6 +16,5 @@ namespace DeviceManagement.Domain.Repositories
         public Task<User> GetUserByIdAsync(int id);
         public User GetUserByEmail(string email);
         public IEnumerable<Role> GetUserRolesAsync(int id);
-        public  Task<Location> GetUserLocation(int id);
     }
 }

@@ -47,7 +47,7 @@ namespace DeviceManagement.WebApi.Controllers
         }
 
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpDelete("{id}")]
+        [HttpDelete("delete-device/{id}")]
         public async Task<ActionResult> DeleteDevice(int id)
         {
             if (!(await deviceService.DeleteDevice(id)))

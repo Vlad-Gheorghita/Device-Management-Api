@@ -38,6 +38,7 @@ namespace DeviceManagement.Application.Services
         {
 
             return mapper.Map<IEnumerable<UserResponse>>(userRepository.GetAll());
+
         }
 
         public async Task<UserResponse> GetUserById(int id)
@@ -76,17 +77,17 @@ namespace DeviceManagement.Application.Services
             
         }
 
-        public async Task<LocationResponse> GetUserLocation(int id)
-        {
-            var location = await userRepository.GetUserLocation(id);
-            if (location == null)
-                return null;
+        //public async Task<LocationResponse> GetUserLocation(int id)
+        //{
+        //    var location = await userRepository.GetUserLocation(id);
+        //    if (location == null)
+        //        return null;
 
-            return new LocationResponse
-            {
-                Latitude = location.Latitude,
-                Longitude = location.Longitude,
-            };
-        }
+        //    return new LocationResponse
+        //    {
+        //        Latitude = location.Latitude,
+        //        Longitude = location.Longitude,
+        //    };
+        //}
     }
 }
