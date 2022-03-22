@@ -1,15 +1,7 @@
 ﻿using DeviceManagement.Application.ServicesInterfaces;
-using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.User;
 using DeviceManagement.Domain.Repositories;
-using BCrypt.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
-using DeviceManagement.Domain.Models.Location;
 
 namespace DeviceManagement.Application.Services
 {
@@ -77,17 +69,19 @@ namespace DeviceManagement.Application.Services
             
         }
 
-        //public async Task<LocationResponse> GetUserLocation(int id)
-        //{
-        //    var location = await userRepository.GetUserLocation(id);
-        //    if (location == null)
-        //        return null;
+        public async Task<UserResponse> UpdateUserLocation(UserUpdateLocationRequest useraUpdateLocationRequest)
+        {
+            var user = await userRepository.GetUserByIdAsync(useraUpdateLocationRequest.id);
+            if(user == null)
+                return null;
 
-        //    return new LocationResponse
-        //    {
-        //        Latitude = location.Latitude,
-        //        Longitude = location.Longitude,
-        //    };
-        //}
+            user.Latitude = useraUpdateLocationRequest.locationUpdateRequest.Latitude;
+            user.Longitude = useraUpdateLocationRequest.locationUpdateRequest.Longitude;
+
+            if(!(await userRepository.Edit(user)))
+                return null;
+
+            return mapper.Map<UserResponse>(user);
+        }
     }
 }

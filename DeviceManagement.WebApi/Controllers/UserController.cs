@@ -1,5 +1,4 @@
 ﻿using DeviceManagement.Application.ServicesInterfaces;
-using DeviceManagement.Domain.Models.Location;
 using DeviceManagement.Domain.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,11 +57,16 @@ namespace DeviceManagement.WebApi.Controllers
             return Ok("User Deleted Successfully");
         }
 
-        //[Authorize(Policy = "RequireAdminRole")]
-        //[HttpGet("{id}/location")]
-        //public async Task<ActionResult<LocationResponse>> GetUserLocation(int id)
-        //{
-        //    return Ok(await userService.GetUserLocation(id));
-        //}
+        [AllowAnonymous]
+        [HttpPut("update-user-location")]
+        public async Task<ActionResult> UpdateUserLocation(UserUpdateLocationRequest userUpdateLocationRequest)
+        {
+            var res = await userService.UpdateUserLocation(userUpdateLocationRequest);
+
+            if (res == null)
+                return NotFound("User not found");
+
+            return Ok(res);
+        }
     }
 }

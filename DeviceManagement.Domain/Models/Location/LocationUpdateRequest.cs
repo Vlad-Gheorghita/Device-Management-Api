@@ -1,7 +1,7 @@
 ﻿
 namespace DeviceManagement.Domain.Models.Location
 {
-    public class LocationResponse
+    public class LocationUpdateRequest
     {
         public string Latitude { get; set; }
 

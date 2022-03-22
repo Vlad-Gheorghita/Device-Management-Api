@@ -1,5 +1,4 @@
 ﻿using DeviceManagement.Domain.Entities;
-using DeviceManagement.Domain.Models.User;
 using DeviceManagement.Domain.Repositories;
 using DeviceManagement.Infrastructure.Data.Generic;
 using DeviceManagement.Infrastructure.Persistence;

@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using DeviceManagement.Application.ServicesInterfaces;
-using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.Device;
-using DeviceManagement.Domain.Models.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.WebApi.Controllers
 {
-    
+
     public class DeviceController : ApiControllerBase
     {
         private readonly IDeviceService deviceService;
@@ -60,19 +57,33 @@ namespace DeviceManagement.WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult> EditDevice(DeviceUpdateRequest deviceUpdateRequest)
         {
-            if(!(await deviceService.UpdateDevice(deviceUpdateRequest)))
+            if (!(await deviceService.UpdateDevice(deviceUpdateRequest)))
                 return NotFound();
 
             return Ok(deviceUpdateRequest);
         }
 
         [Authorize(Policy = "RequireUserRole")]
-        [HttpPut("{userId}")]
-        public async Task<ActionResult> UpdateDeviceUser(int userId)
+        [HttpPut("assign-device/{deviceId}/{userId}")]
+        public async Task<ActionResult> AssignUserToDevice(int deviceId, int userId)
         {
-            return Ok();
+            var res = await deviceService.UpdateDeviceUser(deviceId, userId);
+            if (res == null)
+                return NotFound("User or device not found");
+
+            return Ok(res);
         }
 
+        [Authorize(Policy = "RequireUserRole")]
+        [HttpPut("unassign-device/{deviceId}")]
+        public async Task<ActionResult> UnassignUserFromDevice(int deviceId)
+        {
+            var res = await deviceService.UpdateDeviceUser(deviceId, 0);
+            if (res == null)
+                return NotFound("User or device not found");
+
+            return Ok(res);
+        }
 
     }
 }

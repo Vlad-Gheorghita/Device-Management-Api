@@ -1,15 +1,8 @@
 ﻿using AutoMapper;
-using DeviceManagement.Application.Helpers;
 using DeviceManagement.Application.ServicesInterfaces;
 using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.User;
 using DeviceManagement.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeviceManagement.Application.Services
 {
@@ -30,11 +23,6 @@ namespace DeviceManagement.Application.Services
 
         public UserResponse Login(UserLoginRequest userLoginRequest)
         {
-            //var users = await userRepository.GetAllAsync();
-            //if (!users.Any(u => u.Email == userLoginRequest.Email))
-            //    return null;
-
-            //var user = userRepository.List().FirstOrDefault(u => u.Email == userLoginRequest.Email);
             var user = userRepository.GetUserByEmail(userLoginRequest.Email);
             if (user == null)
                 return null;
@@ -47,9 +35,7 @@ namespace DeviceManagement.Application.Services
 
             userResponse.Token = this.tokenService.CreateToken(user);
 
-
             return userResponse;
-
         }
 
         public async Task<UserResponse> Register(UserRegisterRequest userRegisterRequest)

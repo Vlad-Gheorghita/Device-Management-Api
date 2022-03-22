@@ -3,11 +3,6 @@ using DeviceManagement.Application.ServicesInterfaces;
 using DeviceManagement.Domain.Entities;
 using DeviceManagement.Domain.Models.Device;
 using DeviceManagement.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeviceManagement.Application.Services
 {
@@ -15,11 +10,13 @@ namespace DeviceManagement.Application.Services
     {
         private readonly IDeviceRepository deviceRepository;
         private readonly IMapper mapper;
+        private readonly IUserRepository userRepository;
 
-        public DeviceService(IDeviceRepository deviceRepository, IMapper mapper)
+        public DeviceService(IDeviceRepository deviceRepository, IMapper mapper, IUserRepository userRepository)
         {
             this.deviceRepository = deviceRepository;
             this.mapper = mapper;
+            this.userRepository = userRepository;
         }
 
         public async Task<bool> AddDevice(DeviceCreateRequest deviceCreateRequest)
@@ -60,6 +57,37 @@ namespace DeviceManagement.Application.Services
 
             return await deviceRepository.Edit(device);
 
+        }
+
+        public async Task<DeviceResponse> UpdateDeviceUser(int deviceId, int userId)
+        {
+            
+            var device = await deviceRepository.GetDeviceByIdAsync(deviceId);
+            if (device == null)
+                return null;
+
+            if(userId == 0)
+            {
+                device.User = null;
+                if (!(await deviceRepository.Edit(device)))
+                    return null;
+                return mapper.Map<DeviceResponse>(device);
+            }
+
+            if(device.User != null)
+                return null;
+
+            var user = await userRepository.GetUserByIdAsync(userId);
+
+            if (user == null)
+                return null;
+
+            device.User = user;
+
+            if (!(await deviceRepository.Edit(device)))
+                return null;
+
+            return mapper.Map<DeviceResponse>(device);
         }
     }
 }

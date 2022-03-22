@@ -1,11 +1,4 @@
-﻿using DeviceManagement.Domain.Entities;
-using DeviceManagement.Domain.Models.Location;
-using DeviceManagement.Domain.Models.Role;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DeviceManagement.Domain.Models.Role;
 
 namespace DeviceManagement.Domain.Models.User
 {
