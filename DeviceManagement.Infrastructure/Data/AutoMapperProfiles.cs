@@ -4,7 +4,7 @@ using DeviceManagement.Domain.Models.Device;
 using DeviceManagement.Domain.Models.Role;
 using DeviceManagement.Domain.Models.User;
 
-namespace DeviceManagement.WebApi
+namespace DeviceManagement.Infrastructure.Data
 {
     public class AutoMapperProfiles : Profile
     {

@@ -22,7 +22,7 @@ namespace DeviceManagement.WebApi.Controllers
         {
             var deviceList = await deviceService.GetAllDevices();
 
-            return Ok(deviceList.ToList()); //nu stiu daca e de aici 
+            return Ok(deviceList.ToList());
         }
 
         [Authorize(Policy = "RequireUserRole")]
