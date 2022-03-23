@@ -15,7 +15,7 @@ namespace DeviceManagement.WebApi.Controllers
         }
 
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpGet]
+        [HttpGet("users")]
         public ActionResult<IEnumerable<UserResponse>> GetUsers()
         {
             var users = userService.GetAllUsers();
@@ -38,7 +38,7 @@ namespace DeviceManagement.WebApi.Controllers
         }
 
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<ActionResult> UpdateUser(UserUpdateRequest userUpdateRequest)
         {
             if (!(await userService.UpdateUser(userUpdateRequest)))

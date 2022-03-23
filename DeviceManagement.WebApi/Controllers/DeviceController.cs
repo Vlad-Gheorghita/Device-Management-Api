@@ -17,7 +17,7 @@ namespace DeviceManagement.WebApi.Controllers
         }
 
         [Authorize(Policy = "RequireUserRole")]
-        [HttpGet]
+        [HttpGet("devices")]
         public async Task<ActionResult<List<DeviceResponse>>> GetAllDevices()
         {
             var deviceList = await deviceService.GetAllDevices();
@@ -34,11 +34,11 @@ namespace DeviceManagement.WebApi.Controllers
 
 
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult> AddDevice(DeviceCreateRequest deviceCreateRequest)
         {
             if (!(await deviceService.AddDevice(deviceCreateRequest)))
-                return BadRequest("Something went wrong");
+                return BadRequest("Something went wrong or device already exists");
 
             return Ok("Device added successfully");
         }
@@ -54,7 +54,7 @@ namespace DeviceManagement.WebApi.Controllers
         }
 
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpPut]
+        [HttpPut("edit")]
         public async Task<ActionResult> EditDevice(DeviceUpdateRequest deviceUpdateRequest)
         {
             if (!(await deviceService.UpdateDevice(deviceUpdateRequest)))

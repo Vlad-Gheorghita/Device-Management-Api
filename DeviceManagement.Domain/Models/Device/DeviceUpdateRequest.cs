@@ -14,7 +14,7 @@ namespace DeviceManagement.Domain.Models.Device
 
         public string OperatingSystem { get; set; }
 
-        public double OperatingSystemVersion { get; set; }
+        public string OperatingSystemVersion { get; set; }
 
         public string Processor { get; set; }
 

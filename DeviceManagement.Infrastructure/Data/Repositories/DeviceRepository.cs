@@ -16,6 +16,11 @@ namespace DeviceManagement.Infrastructure.Data.Repositories
             this.dbContext = dbContext;
         }
 
+        public async Task<bool> CheckIfExists(string name)
+        {
+            return await dbContext.Devices.AnyAsync(d => d.Name == name);
+        }
+
         public async Task<IEnumerable<Device>> GetAllDevicesAsync()
         {
             return await dbContext.Devices.Include(d => d.User).ToListAsync();

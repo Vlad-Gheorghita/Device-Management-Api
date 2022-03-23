@@ -11,5 +11,7 @@ namespace DeviceManagement.Domain.Repositories
 
         public Task<Device> GetDeviceByIdAsync(int id);
 
+        public Task<bool> CheckIfExists(string name);
+
     }
 }

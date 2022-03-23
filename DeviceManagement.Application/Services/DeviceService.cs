@@ -21,6 +21,8 @@ namespace DeviceManagement.Application.Services
 
         public async Task<bool> AddDevice(DeviceCreateRequest deviceCreateRequest)
         {
+            if(await deviceRepository.CheckIfExists(deviceCreateRequest.Name))
+                return false;
             var device = mapper.Map<Device>(deviceCreateRequest);
             return await deviceRepository.Add(device);
         }

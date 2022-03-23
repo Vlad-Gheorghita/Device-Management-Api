@@ -16,7 +16,7 @@ namespace DeviceManagement.Domain.Entities
 
         public string OperatingSystem { get; set; }
 
-        public double OperatingSystemVersion   { get; set; }
+        public string OperatingSystemVersion   { get; set; }
 
         public string Processor { get; set; }
 
