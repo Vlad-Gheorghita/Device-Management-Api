@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace DeviceManagement.Domain.Repositories.Generic
 {
@@ -15,6 +10,7 @@ namespace DeviceManagement.Domain.Repositories.Generic
         Task<bool> Add(T entity);
         Task<bool> Delete(T entity);
         Task<bool> Edit(T entity);
+
     }
 
     public abstract class EntityBase

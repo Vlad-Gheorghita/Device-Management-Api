@@ -1,18 +1,17 @@
 
 using DeviceManagement.Application.Services;
 using DeviceManagement.Application.ServicesInterfaces;
+using DeviceManagement.Domain.Mappers;
 using DeviceManagement.Domain.Repositories;
-using DeviceManagement.Infrastructure;
 using DeviceManagement.Infrastructure.Data;
 using DeviceManagement.Infrastructure.Data.Repositories;
+using DeviceManagement.Infrastructure.Mappers;
 using DeviceManagement.Infrastructure.Persistence;
-using DeviceManagement.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -51,6 +50,11 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+//Mappers
+builder.Services.AddScoped<IRoleMapper, RoleMapper>();
+builder.Services.AddScoped<IUserMapper, UserMapper>();
+builder.Services.AddScoped<IDeviceMapper, DeviceMapper>();
 
 
 
